@@ -6,3 +6,6 @@ Front End: ReactJs
 
 API Securing Approach: [Authorize] Attribute
 
+.Net SDK Version: 7.0.10
+
+Demostrational Video: https://youtu.be/XoMETQz4tJ0

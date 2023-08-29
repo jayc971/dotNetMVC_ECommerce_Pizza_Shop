@@ -155,29 +155,28 @@ class MenuBox extends React.Component {
                 menuParVar = " col-lg-8 col-md-8 col-xs-12 row";
             menuVar = " pizza-item d-flex  col-lg-6 col-md-12 col-xs-12  p-0 gap-2 text-justify p-2";
         }
+        let pendingMsg = React.createElement("img", { className: "w-100", src: "./assets/loading.gif" });
         let menus = this.state.items || [];
         var menuList = [];
-        if (menus) {
-            menuList = menus.map((menu) => {
-                return (this.state.isLoading ?
-                    React.createElement("h1", null, "Loading...")
-                    :
-                        React.createElement("div", { key: menu.Id, className: menuVar },
-                            React.createElement("div", { className: "position-relative" },
-                                React.createElement("img", { className: "w-100 col-md-4 pizza__img", src: '/assets/imgs/' + menu.Picture, alt: menu.Picture })),
-                            React.createElement("div", { className: "col-md-8 text-justify" },
-                                React.createElement("b", null, menu.Name),
-                                React.createElement("br", null),
-                                React.createElement("p", { style: { textAlign: "justify" } }, menu.Description),
-                                React.createElement("div", { className: "d-flex justify-content-between w-100" },
-                                    React.createElement("span", null,
-                                        React.createElement("b", null,
-                                            "$",
-                                            menu.Price)),
-                                    "  ",
-                                    React.createElement("button", { className: "btn btn-outline-success", onClick: this.addToCart.bind(this, menu.Id) }, "Add to Cart")))));
-            }, this);
-        }
+        menuList = menus.map((menu, index) => {
+            if (menus.length - 1 !== index) {
+                pendingMsg = React.createElement(React.Fragment, null);
+            }
+            return (React.createElement("div", { key: menu.Id, className: menuVar },
+                React.createElement("div", { className: "position-relative" },
+                    React.createElement("img", { className: "w-100 col-md-4 pizza__img", src: '/assets/imgs/' + menu.Picture, alt: menu.Picture })),
+                React.createElement("div", { className: "col-md-8 text-justify" },
+                    React.createElement("b", null, menu.Name),
+                    React.createElement("br", null),
+                    React.createElement("p", { style: { textAlign: "justify" } }, menu.Description),
+                    React.createElement("div", { className: "d-flex justify-content-between w-100" },
+                        React.createElement("span", null,
+                            React.createElement("b", null,
+                                "$",
+                                menu.Price)),
+                        "  ",
+                        React.createElement("button", { className: "btn btn-outline-success", onClick: this.addToCart.bind(this, menu.Id) }, "Add to Cart")))));
+        }, this);
         var total = 0;
         let myCart = this.state.myOrder || [];
         var cartItemIndex = 0;
@@ -209,8 +208,10 @@ class MenuBox extends React.Component {
                 React.createElement("button", { className: "btn-success btn", onClick: this.continueOrder.bind(this) }, "Proceed Order"));
         if (this.state.orderPlaced === true) {
             total = 0;
-            totalAndContinueLink = React.createElement("div", { className: "d-flex justify-content-between align-items-center" },
-                React.createElement("p", null, "Order placed successfully"));
+            pendingMsg = React.createElement("h1", null, "Order Placed Successfully..");
+            menuList = [];
+            myItems = [];
+            cart.style.display = "none";
         }
         return (this.state.isLoading ?
             React.createElement("h1", null, "Loading...")
@@ -219,7 +220,9 @@ class MenuBox extends React.Component {
                     this.state.showPopup ? React.createElement(Popup_1.Popup, { handlerFromParent: this.handleDataFromChild, myOrder: this.state.myOrder, userId: this.state.userId }) : null,
                     React.createElement("div", { id: "wrapper", className: "container" },
                         React.createElement("div", { className: "row py-2 gap-2" },
-                            React.createElement("div", { id: "pizzaMenu", className: menuParVar }, menuList),
+                            React.createElement("div", { id: "pizzaMenu", className: menuParVar },
+                                pendingMsg,
+                                menuList),
                             React.createElement("div", { id: "pizzaCart", className: `border m-2 col-lg-4 col-md-4 col-xs-4 col-lg-3` },
                                 React.createElement("h4", { className: "text-center justify-content-center pt-2" }, "My Cart"),
                                 React.createElement("hr", null),

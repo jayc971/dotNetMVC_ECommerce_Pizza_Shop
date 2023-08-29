@@ -12,7 +12,10 @@
     <nav id="header" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark ">
         <div class="container"  >
             <div>
-                <img src="/assets/logo.jpg" style="width:50px" />
+                <a href="@Url.Action("Index", "Home", new { area = "" })">
+                    <img style ="width:50px"  src="@Url.Content("~/assets/logo.jpg")" , alt="Logo"/>
+                </a>
+
                 @Html.ActionLink("The Pizza House", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"

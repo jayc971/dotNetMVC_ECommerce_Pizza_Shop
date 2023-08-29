@@ -165,18 +165,20 @@ export class MenuBox extends React.Component<any, IAppState>{
             menuVar = " pizza-item d-flex  col-lg-6 col-md-12 col-xs-12  p-0 gap-2 text-justify p-2";
         }
 
+        let pendingMsg = <img className="w-100" src="./assets/loading.gif"/>;
+
         let menus = this.state.items || [];
 
         var menuList = [];
 
-        if (menus) {
-            menuList = menus.map((menu) => {
+            menuList = menus.map((menu, index) => {
+
+                if (menus.length - 1 !== index) {
+                    pendingMsg = <></>
+                }
 
                 return (
-                    this.state.isLoading ?
-
-                        <h1>Loading...</h1>
-                        :
+                
                         <div key={menu.Id} className={menuVar}>
                             <div className={"position-relative"}>
                                 <img className={"w-100 col-md-4 pizza__img"} src={'/assets/imgs/' + menu.Picture} alt={menu.Picture} />
@@ -188,12 +190,14 @@ export class MenuBox extends React.Component<any, IAppState>{
                             </div>
                         </div>
 
-                    );
+                );
 
-                }, this);
-           
-        } 
+             
 
+
+            }, this);
+
+      
         var total = 0;
         let myCart = this.state.myOrder || [];
         var cartItemIndex = 0;
@@ -225,7 +229,14 @@ export class MenuBox extends React.Component<any, IAppState>{
 
         if (this.state.orderPlaced === true) {
             total = 0;
-            totalAndContinueLink = <div className="d-flex justify-content-between align-items-center"><p>Order placed successfully</p></div>;
+
+            pendingMsg = <h1>Order Placed Successfully..</h1>
+
+            menuList = [];
+
+            myItems = [];
+
+           cart.style.display = "none"
         }
 
        
@@ -243,6 +254,7 @@ export class MenuBox extends React.Component<any, IAppState>{
                 <div id="wrapper" className={"container"}>
                     <div className={"row py-2 gap-2"}>
                             <div id="pizzaMenu" className={menuParVar}>
+                                {pendingMsg }
                             {menuList}
                             </div>
                             <div id="pizzaCart" className={`border m-2 col-lg-4 col-md-4 col-xs-4 col-lg-3`}>
